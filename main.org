@@ -1,0 +1,33 @@
+#+STARTUP: inlineimages
+
+#+BEGIN_SRC emacs-lisp :results none :noexport
+(add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+(add-hook 'evil-insert-state-exit-hook 'org-ctrl-c-ctrl-c)
+#+END_SRC
+
+* Библиотеки
+- numpy
+- matplotlib
+- pandas
+- scikit-learn
+- anaconda
+
+* Исходный код
+
+#+BEGIN_SRC python :python "python3" :results file
+import pandas
+import numpy as np
+import matplotlib as mp
+import matplotlib.pyplot as plt
+
+mp.use('Agg')
+fig=plt.figure(figsize=(4,2))
+x=np.linspace(-15,15)
+plt.plot(1/x)
+fig.tight_layout()
+plt.savefig('images/python-matplot-fig.png')
+return 'images/python-matplot-fig.png'# return filename to org-mode
+#+END_SRC
+
+#+RESULTS:
+[[file:images/python-matplot-fig.png]]
