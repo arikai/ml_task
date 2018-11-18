@@ -1,0 +1,24 @@
+#+STARTUP: inlineimages
+
+#+BEGIN_SRC emacs-lisp :results none :noexport :tangle no
+(add-hook 'after-save-hook 'org-babel-tangle 'append)
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
+; (add-hook 'evil-insert-state-exit-hook 'org-ctrl-c-ctrl-c)
+#+END_SRC
+
+* Plan:
+** DONE Samples
+** Process samples
+** SVM
+** DONE Menus etc...
+** Record function
+
+* Библиотеки
+- numpy
+- matplotlib
+- pandas
+- scikit-learn
+
+* Исходный код
+#+INCLUDE: "tape_plotter.py" src python
+#+INCLUDE: "main.py" src python
