@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
+from imports import *
 from matplotlib.animation import FuncAnimation as FuncAnimation
 import sounddevice as sd
-import numpy as np
 from math import ceil
 
 class TapePlotter(object):

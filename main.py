@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
-import os
 import sys
-from sys import stderr
-import numpy as np
 from sklearn import svm
-from pprint import pprint
-from scipy.io.wavfile import read as readwav
+import scipy.signal as sig
 
+from imports import *
 from tape_plotter import TapePlotter
+from waves import load_wavs_from_dir, record_samples
 
 # for some reason, input doesn't work properly on my system
 _input = input
@@ -16,49 +14,7 @@ def input(prompt=''):
     print(prompt, end=' ')
     return _input()
 
-sample_rate = 48000             # sample rate for samples and input
 def menu():
-    def record_samples(nil):
-        return
-
-    def process_samples(direntry):
-        filter(lambda f: f.is_file(), os.scandir(direntry.path))
-        fnames = map(lambda f: f.path,
-                     filter(
-                         lambda f: f.is_file(),
-                         os.scandir(direntry.path)))
-        fnames, rates, wavs = map(np.asarray,
-                                  zip(*tuple(
-                                      map(
-                                          lambda f: (f, *readwav(f)),
-                                          fnames))
-                                      )
-                                  )
-        wrong_rates = (rates != sample_rate)
-        if wrong_rates.any():
-            print('Following files have wrong simple rate (!= {}):'.format(sample_rate),
-                file=stderr)
-            print('\n\t', end='')
-            print('\n\t'.join(map(lambda t: '"{}" | rate = {}'.format(*t),
-                np.vstack((fnames, rates))[:,wrong_rates].transpose()
-            )))
-            print('\nSkipping them')
-
-        wavs = wavs[~wrong_rates]
-        for i in wavs:
-            print(len(i.shape), i[:,0].shape)
-
-        maxlen = max(i.shape[0] for i in wavs)
-        ar = []
-        for i in wavs:
-            s = i[:] if len(i.shape) == 1 else i[:,0]
-            s = s.copy()
-            s.resize((maxlen,))
-            ar.append(s)
-
-        data = np.vstack(ar)
-        return data
-
     base_dir = os.path.dirname(os.path.realpath(__file__))
     samples_dir = base_dir + '/samples'
 
@@ -67,7 +23,7 @@ def menu():
     if os.path.isdir(samples_dir):
         os.chdir(samples_dir)
         menu_entries.extend(
-            ((d.name, d, process_samples)
+            ((d.name, d.path, load_wavs_from_dir)
             for d in filter(lambda f: f.is_dir(), os.scandir())
             )
         )
@@ -95,11 +51,16 @@ def menu():
 
     entry = menu_entries[c]
     train_data = entry[2](entry[1])
+    return train_data
 
 if __name__ == '__main__':
-    data = menu()
-
-    clf = svm.SVR(data)
-    tp = TapePlotter(length=5, fps=60)
+    data = menu()               # [wav1, wav2, wav3, ...]
+    # map(
+    #     lambda wav: sig.stft(wav, fs=sample_rate, return_onesided=True),
+    #     data
+    # )
+    
+    clf = svm.SVC(probability=True)
+    # clf.fit(data, np.arange(0, len(data[0])))
+    tp = TapePlotter(length=1, fps=60)
     tp.plot()
-

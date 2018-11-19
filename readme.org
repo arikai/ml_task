@@ -1,24 +1,35 @@
 #+STARTUP: inlineimages
 
-#+BEGIN_SRC emacs-lisp :results none :noexport :tangle no
-(add-hook 'after-save-hook 'org-babel-tangle 'append)
-(add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
-; (add-hook 'evil-insert-state-exit-hook 'org-ctrl-c-ctrl-c)
-#+END_SRC
-
-* Plan:
+* Roadmap
 ** DONE Samples
-** Process samples
-** SVM
+** DONE Process samples
 ** DONE Menus etc...
-** Record function
+** Data transformation
+- stft
+- peak frequencies
+** SVM
+- SVC with probabilities
+** Noise filtering
+If needed. Truncating frequiencies with small amplitude might be enough.
+** Record function 
+Train model on multiple live recordings of a sound.
 
-* Библиотеки
+* Libraries
 - numpy
+- scipy
 - matplotlib
-- pandas
 - scikit-learn
+- sounddevice
 
-* Исходный код
+* Project Files
+|-----------------+-----------------------------------------|
+| Name            | Description                             |
+|-----------------+-----------------------------------------|
+| main.py         | load all modules, launch program        |
+| tape_plotter.py | TapePlotter - plot real-time recording  |
+| waves.py        | Reads and Transformations of audio data |
+|-----------------+-----------------------------------------|
+
+#+INCLUDE: "waves.py" src python
 #+INCLUDE: "tape_plotter.py" src python
 #+INCLUDE: "main.py" src python
