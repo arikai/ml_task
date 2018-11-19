@@ -30,6 +30,13 @@ Train model on multiple live recordings of a sound.
 | waves.py        | Reads and Transformations of audio data |
 |-----------------+-----------------------------------------|
 
+
+
 #+INCLUDE: "waves.py" src python
 #+INCLUDE: "tape_plotter.py" src python
 #+INCLUDE: "main.py" src python
+
+* Notes
+ Some samples (Clap, Laugh, Whistle) were found in
+ [[https://github.com/laurent-george/protolab_sound_recognition][protolab_sound_recognition project]]. All rights belong to their
+ respective owners.
